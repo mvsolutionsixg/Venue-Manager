@@ -48,3 +48,10 @@ def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db)
         return crud.create_booking(db=db, booking=booking)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.delete("/{booking_id}", response_model=schemas.Booking)
+def delete_booking(booking_id: int, db: Session = Depends(get_db)):
+    db_booking = crud.delete_booking(db, booking_id)
+    if not db_booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    return db_booking

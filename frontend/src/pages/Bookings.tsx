@@ -117,6 +117,18 @@ export function Bookings() {
         });
     };
 
+    const handleCancel = async (id: number) => {
+        if (!confirm("Are you sure you want to cancel this booking?")) return;
+
+        try {
+            await api.delete(`/bookings/${id}`);
+            fetchBookings();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to cancel booking");
+        }
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -222,7 +234,12 @@ export function Bookings() {
                                         </span>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600 hover:bg-red-50">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                                            onClick={() => handleCancel(booking.id)}
+                                        >
                                             Cancel
                                         </Button>
                                     </TableCell>

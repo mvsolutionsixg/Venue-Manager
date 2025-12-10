@@ -136,15 +136,15 @@ export function BookingCalendar() {
     }
 
     return (
-        <div className="flex flex-col h-full space-y-4 bg-slate-50 p-4 rounded-xl">
+        <div className="flex flex-col h-full space-y-1 bg-slate-50 p-1 rounded-xl">
             {/* Header / Toolbar */}
-            <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm border border-slate-100">
-                <div className="flex items-center space-x-6">
+            <div className="flex items-center justify-between bg-white p-2 rounded-lg shadow-sm border border-slate-100">
+                <div className="flex items-center space-x-3">
                     <div className="flex items-center space-x-2">
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Button variant="outline" className={cn("w-[240px] justify-start text-left font-normal", !date && "text-muted-foreground")}>
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                <Button variant="outline" size="sm" className={cn("w-[200px] h-8 justify-start text-left font-normal text-xs", !date && "text-muted-foreground")}>
+                                    <CalendarIcon className="mr-2 h-3 w-3" />
                                     {date ? format(date, "PPP") : <span>Pick a date</span>}
                                 </Button>
                             </PopoverTrigger>
@@ -154,20 +154,20 @@ export function BookingCalendar() {
                         </Popover>
                     </div>
 
-                    <div className="flex items-center bg-slate-100 rounded-lg p-1">
-                        <Button variant="ghost" size="sm" onClick={() => setDate(d => addMinutes(d, -1440))} className="hover:bg-white hover:shadow-sm">
-                            <ChevronLeft className="w-4 h-4" />
+                    <div className="flex items-center bg-slate-100 rounded-lg p-0.5">
+                        <Button variant="ghost" size="sm" onClick={() => setDate(d => addMinutes(d, -1440))} className="h-7 w-7 p-0 hover:bg-white hover:shadow-sm">
+                            <ChevronLeft className="w-3 h-3" />
                         </Button>
-                        <span className="px-3 text-sm font-medium text-slate-600">
+                        <span className="px-2 text-xs font-medium text-slate-600">
                             {format(date, "EEE, MMM do")}
                         </span>
-                        <Button variant="ghost" size="sm" onClick={() => setDate(d => addMinutes(d, 1440))} className="hover:bg-white hover:shadow-sm">
-                            <ChevronRight className="w-4 h-4" />
+                        <Button variant="ghost" size="sm" onClick={() => setDate(d => addMinutes(d, 1440))} className="h-7 w-7 p-0 hover:bg-white hover:shadow-sm">
+                            <ChevronRight className="w-3 h-3" />
                         </Button>
                     </div>
                 </div>
                 <div>
-                    <Button variant="outline" onClick={() => setDate(new Date())} className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100">
+                    <Button variant="outline" size="sm" onClick={() => setDate(new Date())} className="h-8 text-xs text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100">
                         Today
                     </Button>
                 </div>
@@ -176,11 +176,11 @@ export function BookingCalendar() {
             {/* Calendar Grid */}
             <div className="bg-white rounded-lg border border-slate-200 shadow-sm flex-1 overflow-auto relative">
                 <div className="grid border-b border-slate-200 bg-slate-50 sticky top-0 z-20" style={{ gridTemplateColumns: `80px repeat(${courts.length}, 1fr)` }}>
-                    <div className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider border-r border-slate-100">
+                    <div className="p-2 text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider border-r border-slate-100">
                         Time
                     </div>
                     {courts.map(court => (
-                        <div key={court.id} className="p-4 text-center font-bold text-slate-700 border-r border-slate-100 last:border-r-0">
+                        <div key={court.id} className="p-2 text-center text-sm font-bold text-slate-700 border-r border-slate-100 last:border-r-0">
                             {court.name}
                         </div>
                     ))}
@@ -188,9 +188,9 @@ export function BookingCalendar() {
 
                 <div className="divide-y divide-slate-100">
                     {slots.map((slot) => (
-                        <div key={slot} className="grid min-h-[5rem] hover:bg-slate-50/50 transition-colors" style={{ gridTemplateColumns: `80px repeat(${courts.length}, 1fr)` }}>
+                        <div key={slot} className="grid min-h-[32px] hover:bg-slate-50/50 transition-colors" style={{ gridTemplateColumns: `80px repeat(${courts.length}, 1fr)` }}>
                             {/* Time Column */}
-                            <div className="p-3 flex items-center justify-center text-sm font-medium text-slate-500 border-r border-slate-100 bg-slate-50/30 sticky left-0 z-10">
+                            <div className="p-1 flex items-center justify-center text-xs font-medium text-slate-500 border-r border-slate-100 bg-slate-50/30 sticky left-0 z-10">
                                 {slot}
                             </div>
 
@@ -198,18 +198,15 @@ export function BookingCalendar() {
                             {courts.map(court => {
                                 const booking = getSlotStatus(court.id, slot);
                                 return (
-                                    <div key={court.id} className="p-2 border-r border-slate-100 last:border-r-0 relative group">
+                                    <div key={court.id} className="p-1 border-r border-slate-100 last:border-r-0 relative group">
                                         {booking ? (
-                                            <div className="w-full h-full bg-indigo-600 rounded-lg p-3 text-white shadow-sm hover:shadow-md hover:bg-indigo-700 transition-all cursor-default flex flex-col justify-center">
-                                                <div className="flex items-center space-x-1 text-indigo-100 text-xs mb-1">
-                                                    <Clock className="w-3 h-3" />
-                                                    <span>{booking.start_time.substring(0, 5)} - {booking.end_time.substring(0, 5)}</span>
-                                                </div>
-                                                <div className="font-semibold text-sm truncate flex items-center">
-                                                    <User className="w-3 h-3 mr-1 opacity-70" />
+                                            <div className="w-full h-full bg-indigo-600 rounded p-1 text-white shadow-sm hover:shadow-md hover:bg-indigo-700 transition-all cursor-default flex items-center overflow-hidden">
+                                                <div className="font-semibold text-xs truncate flex items-center">
+                                                    <span className="mr-1 opacity-75 text-[10px]">{booking.start_time.substring(0, 5)}</span>
                                                     {booking.customer_name}
                                                 </div>
                                             </div>
+
                                         ) : (
                                             <Dialog open={openDialog && selectedSlot?.court.id === court.id && selectedSlot?.time === slot} onOpenChange={(open) => {
                                                 if (open) setSelectedSlot({ court, time: slot });
